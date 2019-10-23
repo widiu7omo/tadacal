@@ -1,0 +1,26 @@
+
+<svg width="325px" height="161px" viewBox="0 0 325 161" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <radialGradient cx="50%" cy="0%" fx="50%" fy="0%" r="100%" gradientTransform="translate(0.500000,0.000000),scale(0.859813,1.000000),rotate(90.000000),translate(-0.500000,-0.000000)" id="radialGradient-1">
+            <stop stop-color="#2100FE" offset="0%"></stop>
+            <stop stop-color="#000000" offset="100%"></stop>
+        </radialGradient>
+        <text id="text-2" font-family="ArribaStd, Arriba Std" font-size="210" font-weight="normal">
+            <tspan x="432" y="968">T.C</tspan>
+        </text>
+        <filter x="-2.8%" y="-1.8%" width="105.0%" height="105.1%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="iPhone-XS" transform="translate(-427.000000, -820.000000)">
+            <g id="T.C">
+                <use fill="#D8D8D8" fill-opacity="1" filter="url(#filter-3)" xlink:href="#text-2"></use>
+                <use fill="url(#radialGradient-1)" fill-rule="evenodd" xlink:href="#text-2"></use>
+                <use fill="#D8D8D8" fill-opacity="1" xlink:href="#text-2"></use>
+            </g>
+        </g>
+    </g>
+</svg>

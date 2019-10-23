@@ -11,24 +11,31 @@ export default class Tadacal1Screen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            enabledMenu: "TadaCal Apk",//default menu
             menuKalkulator: [{
                 name: "TadaCal Apk",
+                status: true,
                 submenu: []
-            }, {
-                name: "Khusus Admissible Ground Pressures",
-                submenu: [
-                    {name: "Asphalt"},
-                    {name: "Concrate B I"},
-                    {name: "Concrate B II"}
-                ]
-            }],
+            },
+                {
+                    name: "Khusus Admissible Ground Pressures",
+                    status: false,
+                    submenu:
+                        [
+                            {name: "Asphalt", desc: "Perhitungan asphalt",screen:'Asphalt'},
+                            {name: "Concrate B I", desc: "Perhitungan Concrate B I",screen:'Con1'},
+                            {name: "Concrate B II", desc: "Perhitungan Concrate B II",screen:'Con2'},
+                        ]
+                }
+            ],
             tadacalapk: {
                 n1: '0',
                 n2: '0',
                 r1: '0'
-            },
+            }
+            ,
             tadacalapkData: [
-                {name: "dmissible Ground", value: "0.0"},
+                {name: "Admissible Ground", value: ""},
                 {name: "Mud, turf, Moorland", value: "0.0"},
                 {name: "Fine to Medium-fine-sand", value: "1.5"},
                 {name: "Coarse sand to Gravel", value: "2.0"},
@@ -44,36 +51,51 @@ export default class Tadacal1Screen extends React.Component {
     }
 
     PickerOption = () => (
-        <Picker
-            // enabled={}
-            // selectedValue={}
-            onValueChange={value => {
-                this.setState({})
-            }
-            }>
-            {
-                this.state.tadacalapkData.map((note, key) => (
-                    <Picker.Item key={key} label={note.name}
-                                 value={note.value}/>
-                ))
-            }
-        </Picker>
+        <View
+            style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between', alignContent: 'space-between'}}>
+            <Picker
+                // enabled={}
+                selectedValue={this.state.tadacalapk.n2}
+                onValueChange={value => {
+                    const tadacalapk = {...this.state.tadacalapk};
+                    tadacalapk.n2 = value;
+                    this.setState({tadacalapk})
+                }
+                }>
+                {
+                    this.state.tadacalapkData.map((value, key) => (
+                        <Picker.Item key={key} label={value.name}
+                                     value={value.value}/>
+                    ))
+                }
+            </Picker>
+            <Text style={{fontSize: 40, textAlign: 'center'}}>{this.state.tadacalapk.n2}</Text>
+        </View>
     );
     _handleTadaCallApk = (value) => {
         let isNumber = value.match(/^-{0,1}\d+$/);
-        if (isNumber) this.setState({})
+        console.log(value);
+        let tadacalapk = {...this.state.tadacalapk}
+        tadacalapk.n1 = value;
+        if (isNumber) this.setState({tadacalapk});
         else {
-            value !== '' ? alert('Harus berupa angka') : this.setState({val1: ''});
+            if (value === '') {
+                tadacalapk.n1 = '';
+                this.setState({tadacalapk});
+            }
         }
     };
     _handleTadaCallOption = (value) => {
         this.setState({val2: value})
     };
     _calculationResult = () => {
-        let {val1, val2} = this.state;
-        let isValid1 = val1.match(/^-{0,1}\d+$/);
+        let {tadacalapk} = this.state;
+        let isValid1 = tadacalapk.n1.match(/^-{0,1}\d+$/);
+        let isValid2 = tadacalapk.n2.match(/^-{0,1}\d+$/);
         if (isValid1) {
-            this.setState({result: val1 * val2})
+            let tadacalapk = {...this.state.tadacalapk};
+            tadacalapk.r1 = tadacalapk.n1 / tadacalapk.n2;
+            this.setState({tadacalapk});
             return;
         }
         alert('Tidak dapat dihitung, periksa nomor yang anda masukkan');
@@ -94,42 +116,74 @@ export default class Tadacal1Screen extends React.Component {
         )
     }
 
-    render() {
-        let {degres, val1, val2, result} = this.state;
+    CalculatorTadacal() {
+        let {tadacalapk} = this.state;
+        return (<Card>
+            <Card.Title title="TADACAL APK" subtitle="Aplikasi perhitungan alat berat"/>
+            <Card.Content>
+                <View>
+                    <TextInput keyboardType={"numeric"} mode={"outlined"} label={"Masukkan Nilai"}
+                               value={tadacalapk.n1}
+                               onChangeText={this._handleTadaCallApk}/>
+                    {this.PickerOption()}
+                    <Button onPress={this._calculationResult} style={{marginTop: 20}} mode={"contained"}>Hitung
+                        Hasil</Button>
+                    <View style={{marginTop: 30, flex: 1, flewGrow: 1}}>
+                        <Text style={{
+                            textAlign: 'center',
+                            fontSize: 100,
+                            flex: 1,
+                            flexGrow: 1
+                        }}>{tadacalapk.r1}</Text>
+                    </View>
+                </View>
+            </Card.Content>
+        </Card>)
+    }
+
+    GroundPressure() {
+        let {menuKalkulator} = this.state;
+        let groundPressureCategory = menuKalkulator[1].submenu;
         return (
-            <ScrollView contentContainerStyle={{padding:20}}>
+            <View>
+                {
+                    groundPressureCategory.map((submenu,index) => {
+                        return <Card style={{marginTop:20}} key={index}>
+                            <Card.Title title={submenu.name} subtitle={submenu.desc}/>
+                            <Card.Actions>
+                                <Button style={{float:'right'}} onPress={()=>this.props.navigation.navigate(submenu.screen)}>Buka</Button>
+                            </Card.Actions>
+                        </Card>
+                    })
+                }
+            </View>)
+    }
+
+    render() {
+        let {tadacalapk, menuKalkulator, enabledMenu} = this.state;
+        return (
+            <ScrollView contentContainerStyle={{padding: 20}}>
                 <View style={{flex: 1, flowGrow: 1, padding: 20}}>
                     <Text>Pilih Jenis Kalkulator yang kalian inginkan</Text>
                     <Picker
                         // enabled={}
-                        // selectedValue={}
+                        selectedValue={this.state.enabledMenu}
                         onValueChange={value => {
-                            this.setState({})
+                            this.setState({enabledMenu: value})
                         }
                         }>
                         {
-                            this.state.menuKalkulator.map((note, key) => (
-                                <Picker.Item key={key} label={note.name}
-                                             value={note.value}/>
+                            this.state.menuKalkulator.map((menu, key) => (
+                                <Picker.Item key={key} label={menu.name}
+                                             value={menu.name}/>
                             ))
                         }
                     </Picker>
                 </View>
-                <Card>
-                    <Card.Title title="TADACAL APK" subtitle="Aplikasi perhitungan alat berat"/>
-                    <Card.Content>
-                        <View>
-                            <TextInput number={true} mode={"outlined"} label={"Masukkan Nilai"} value={val1}
-                                       onChangeText={this._handleNilai1}/>
-                            {this.PickerOption()}
-                            <Button onPress={this._calculationResult} style={{marginTop: 20}} mode={"contained"}>Hitung
-                                Hasil</Button>
-                            <View style={{marginTop: 30, flex: 1, flewGrow: 1}}>
-                                <Text style={{textAlign: 'center', fontSize: 100, flex: 1, flexGrow: 1}}>{result}</Text>
-                            </View>
-                        </View>
-                    </Card.Content>
-                </Card>
+                {
+                    enabledMenu === this.state.menuKalkulator[0].name ? this.CalculatorTadacal() :
+                        this.GroundPressure()
+                }
             </ScrollView>
         )
     }

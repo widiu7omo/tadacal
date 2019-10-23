@@ -8,6 +8,12 @@ import ReferenceScreen from '../screens/ReferenceScreen';
 import KalkulatorScreen from "../screens/KalkulatorScreen";
 import Tadacal1Screen from "../screens/Kalkulator/Tadacal1Screen";
 import Tadacal2Screen from "../screens/Kalkulator/Tadacal2Screen";
+import AsphaltScreen from "../screens/Kalkulator/AsphaltScreen";
+import Concrete_B_1Screen from "../screens/Kalkulator/Concrete_B_1Screen";
+import Concrete_B_2Screen from "../screens/Kalkulator/Concrete_B_2Screen";
+import OutriggerScreen from "../screens/OutriggerScreen";
+import RubberScreen from "../screens/RubberScreen";
+import DetailReferenceScreen from "../screens/DetailReferenceScreen";
 
 const config = Platform.select({
     web: {headerMode: 'screen'},
@@ -42,7 +48,10 @@ HomeStack.path = '';
 const KalkulatorStack = createStackNavigator({
     Kalkulator: KalkulatorScreen,
     Tada1: Tadacal1Screen,
-    Tada2: Tadacal2Screen
+    Tada2: Tadacal2Screen,
+    Asphalt: AsphaltScreen,
+    Con1:Concrete_B_1Screen,
+    Con2:Concrete_B_2Screen
 });
 KalkulatorStack.navigationOptions = {
     tabBarLabel: 'Kalkulator',
@@ -54,6 +63,9 @@ KalkulatorStack.navigationOptions = {
 const ReferenceStack = createStackNavigator(
     {
         Reference: ReferenceScreen,
+        Outrigger:OutriggerScreen,
+        Rubber:RubberScreen,
+        Detail:DetailReferenceScreen
     },
     config
 );

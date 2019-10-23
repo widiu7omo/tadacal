@@ -43,7 +43,7 @@ export default class Tadacal1Screen extends React.Component {
 
             <ScrollView>
                 <View style={{flex: 1, flowGrow: 1, padding: 20}}>
-                    <TextInput number={true} mode={"outlined"} label={"Masukkan Nilai"} value={val1}
+                    <TextInput keyboardType={"numeric"} number={true} mode={"outlined"} label={"Masukkan Nilai"} value={val1}
                                onChangeText={this._handleNilai1}/>
                     <RadioButton.Group
                         onValueChange={this._handleNilai2}
