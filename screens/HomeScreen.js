@@ -67,9 +67,11 @@ export default class HomeScreen extends React.Component {
                                 onPress={this._handleRef}
                             >
                                 <List.Item title="On-outrigger Operation"
-                                           left={() => <List.Icon icon={'looks-one'}/>}/>
+                                           left={() => <List.Icon icon={'looks-one'}/>}
+                                           onPress={this.goTo.bind(this, 'Outrigger')}/>
                                 <List.Item title="On-rubber Operatior"
-                                           left={() => <List.Icon icon={'looks-two'}/>}/>
+                                           left={() => <List.Icon icon={'looks-two'}/>}
+                                           onPress={this.goTo.bind(this,'Rubber')}/>
                             </List.Accordion>
                         </List.Section>
 
